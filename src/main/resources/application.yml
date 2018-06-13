@@ -6,3 +6,10 @@ spring:
       uri: mongodb://${spring.data.mongodb.host}:${spring.data.mongodb.port}/cat
 server:
   port: 80
+
+wx:
+  app-id: ${WX_APP_ID:wxdb76539383687ef1}
+  app-secret: ${WX_APP_SECRET:3e680441efa752ba711e688766e3bc6f}
+  mch-id: ${WX_MCH_ID:}
+  mch-key: ${WX_MCH_KEY:}
+  notify-url: ${WX_NOTIFY_URL:}

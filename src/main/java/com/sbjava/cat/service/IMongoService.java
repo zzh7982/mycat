@@ -3,6 +3,8 @@ package com.sbjava.cat.service;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
+import java.util.List;
+
 /**
  * description: mongo接口
  *
@@ -25,6 +27,13 @@ public interface IMongoService<T, PK> {
      * @return obj
      */
     T findOne(Class<T> e, PK pk);
+    /**
+     * 查询所有
+     *
+     * @param c  class
+     * @return list</obj>
+     */
+    List<T> findAll(Class<T> c);
 
     /**
      * 更新

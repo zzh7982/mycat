@@ -34,7 +34,7 @@ public class UserController extends AbstractController {
             @ApiImplicitParam(name = "score", value = "积分", dataType = "Integer"),
             @ApiImplicitParam(name = "msgFlag", value = "设置开关 0关闭 1开启", dataType = "Integer")
     })
-    @PostMapping()
+    @PostMapping
     public RepObj user(@Valid CatUser user) {
         userService.insert(user);
         return success(user);
@@ -56,7 +56,7 @@ public class UserController extends AbstractController {
             @ApiImplicitParam(name = "score", value = "积分", dataType = "Integer"),
             @ApiImplicitParam(name = "msgFlag", value = "设置开关 0关闭 1开启", dataType = "Integer")
     })
-    @PatchMapping()
+    @PatchMapping
     public RepObj updateUser(CatUser user) {
         return success(userService.update(user, user.getId(), CatUser.class));
     }

@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * description: mongo查询抽象类
@@ -24,7 +25,7 @@ import java.util.Arrays;
 @Repository
 public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
     @Autowired
-    private MongoTemplate mongoTemplate;
+    MongoTemplate mongoTemplate;
 
     @Override
     public void insert(T t) {
@@ -37,6 +38,7 @@ public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public UpdateResult update(T t, PK pk, Class<T> c) {
         Class clazz = t.getClass();
         // 获取实体类的所有属性信息，返回Field数组
@@ -63,5 +65,10 @@ public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
     @Override
     public DeleteResult delete(T t) {
         return mongoTemplate.remove(t);
+    }
+
+    @Override
+    public List<T> findAll(Class<T> c) {
+        return mongoTemplate.find(new Query(), c);
     }
 }
