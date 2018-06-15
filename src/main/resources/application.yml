@@ -3,13 +3,16 @@ spring:
     mongodb:
       host: 47.95.254.253
       port: 27017
-      uri: mongodb://${spring.data.mongodb.host}:${spring.data.mongodb.port}/cat
+      uri: mongodb://cat2018:cat2018@${spring.data.mongodb.host}:${spring.data.mongodb.port}/cat
   redis:
-    host: localhost
-    port: 6379
+    host: 47.95.254.253
     database: 1
+    password: cat2018
 server:
   port: 80
+
+token:
+  auth: false
 
 wx:
   app-id: ${WX_APP_ID:wxdb76539383687ef1}

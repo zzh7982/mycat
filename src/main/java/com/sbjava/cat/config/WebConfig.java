@@ -2,7 +2,9 @@ package com.sbjava.cat.config;
 
 import com.sbjava.cat.interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -21,6 +23,9 @@ public class WebConfig extends WebMvcConfigurationSupport {
     @Autowired
     private TokenInterceptor interceptor;
 
+    @Value("${token.auth}")
+    private boolean auth;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> list = new LinkedList<>();
@@ -29,6 +34,9 @@ public class WebConfig extends WebMvcConfigurationSupport {
         list.add("/error");
         list.add("/swagger**/**");
         list.add("/webjars/**");
+        if(!auth){
+            list.add("/**");
+        }
         registry.addInterceptor(interceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(list);
