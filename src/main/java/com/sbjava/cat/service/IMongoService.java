@@ -23,38 +23,34 @@ public interface IMongoService<T, PK> {
     /**
      * 查询
      *
-     * @param e  class
      * @param pk pk
      * @return obj
      */
-    T findOne(Class<T> e, PK pk);
+    T findOne(PK pk);
 
     /**
      * 查询
      *
-     * @param e
      * @param map
      * @return
      */
-    List<T> findByPro(Class<T> e, Map<String, Object> map);
+    List<T> findByPro(Map<String, Object> map);
 
     /**
      * 查询所有
      *
-     * @param c class
-     * @return list</       obj>
+     * @return list<obj>
      */
-    List<T> findAll(Class<T> c);
+    List<T> findAll();
 
     /**
      * 更新
      *
      * @param t  obj
      * @param pk pk
-     * @param c  class
      * @return UpdateResult
      */
-    UpdateResult update(T t, PK pk, Class<T> c);
+    UpdateResult update(T t, PK pk);
 
     /**
      * 删除

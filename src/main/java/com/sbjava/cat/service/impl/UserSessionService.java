@@ -7,6 +7,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,7 +41,14 @@ public class UserSessionService {
         }
         return redisTemplate.opsForValue().get(token).split("#")[1];
     }
-    public CatUser getUserByToken(String token){
-        return userService.findByPro(CatUser.class,);
+
+    public CatUser getUserByToken(String token) {
+        try {
+            Map<String, Object> map = new HashMap<>(1);
+            map.put("openId", getOpenId(token));
+            return userService.findByPro(map).get(0);
+        } catch (Exception e) {
+            throw new CatException("请重新登录", -100);
+        }
     }
 }
