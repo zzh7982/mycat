@@ -36,13 +36,13 @@ public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
     }
 
     @Override
-    public T findOne(Class<T> c, PK pk) {
+    public T findOne(PK pk) {
         return mongoTemplate.findById(pk, getEntityClass());
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public UpdateResult update(T t, PK pk, Class<T> c) {
+    public UpdateResult update(T t, PK pk) {
         Class clazz = t.getClass();
         // 获取实体类的所有属性信息，返回Field数组
         Field[] fields = clazz.getDeclaredFields();
@@ -62,7 +62,7 @@ public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
             }
         });
 
-        return mongoTemplate.upsert(query, update, c);
+        return mongoTemplate.upsert(query, update, getEntityClass());
     }
 
     @Override
@@ -71,15 +71,15 @@ public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
     }
 
     @Override
-    public List<T> findAll(Class<T> c) {
-        return mongoTemplate.find(new Query(), c);
+    public List<T> findAll() {
+        return mongoTemplate.find(new Query(), getEntityClass());
     }
 
     @Override
-    public List<T> findByPro(Class<T> c, Map<String, Object> map) {
+    public List<T> findByPro(Map<String, Object> map) {
         Query query = new Query();
         map.forEach((k, v) -> query.addCriteria(Criteria.where(k).is(v)));
-        return mongoTemplate.find(query, c);
+        return mongoTemplate.find(query, getEntityClass());
     }
 
     // 获取需要操作的实体类class

@@ -48,14 +48,14 @@ public class ArticleController extends AbstractController {
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String")
     @GetMapping("/{id}")
     public RepObj getArticle(@PathVariable("id") String id) {
-        return success(articleService.findOne(Article.class, id));
+        return success(articleService.findOne(id));
     }
 
     @ApiOperation(value = "查询时间轴", notes = "查询时间轴")
     @GetMapping
     public RepObj getArticles(String userId) {
         if (StringUtils.isEmpty(userId)) {
-            return success(articleService.findAll(Article.class));
+            return success(articleService.findAll());
         }
         return success(articleService.getArticleByUser(userId));
     }
@@ -72,7 +72,7 @@ public class ArticleController extends AbstractController {
     @PatchMapping
     public RepObj updateArticle(Article article) {
         article.setUpdateTime(LocalDateTime.now());
-        return success(articleService.update(article, article.getId(), Article.class));
+        return success(articleService.update(article, article.getId()));
     }
 
     @ApiOperation(value = "删除时间轴", notes = "删除时间轴")
@@ -84,9 +84,15 @@ public class ArticleController extends AbstractController {
         return success(articleService.delete(article));
     }
 
-//    @ApiOperation(value = "根据用户查询时间轴", notes = "根据用户查询时间轴")
-//    @GetMapping("/user/{userId}")
-//    public RepObj getArticleByUserId(@PathVariable("userId") String userId) {
-//        return success(articleService.getArticleByUser(userId));
-//    }
+    @ApiOperation(value = "根据用户查询时间轴", notes = "根据用户查询时间轴")
+    @GetMapping("/user/{userId}")
+    public RepObj getArticleByUserId(@PathVariable("userId") String userId) {
+        return success(articleService.getArticleByUser(userId));
+    }
+
+    @ApiOperation(value = "查询我的时间轴", notes = "查询我的时间轴")
+    @GetMapping("/mine")
+    public RepObj getArticleMine() {
+        return success(articleService.getArticleByUser(getUserId()));
+    }
 }

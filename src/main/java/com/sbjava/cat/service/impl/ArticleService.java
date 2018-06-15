@@ -24,7 +24,7 @@ public class ArticleService extends BaseMongoService<Article, String> {
     }
 
     @Override
-    public List<Article> findAll(Class<Article> c) {
-        return mongoTemplate.find(new Query().with(by(Sort.Direction.DESC, "createTime")), c);
+    public List<Article> findAll() {
+        return mongoTemplate.find(new Query().with(by(Sort.Direction.DESC, "createTime")), getEntityClass());
     }
 }

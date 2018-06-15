@@ -44,7 +44,7 @@ public class UserController extends AbstractController {
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String")
     @GetMapping("/{id}")
     public RepObj getUser(@PathVariable("id") String id) {
-        return success(userService.findOne(CatUser.class, id));
+        return success(userService.findOne(id));
     }
 
     @ApiOperation(value = "更新用户", notes = "更新用户")
@@ -58,7 +58,7 @@ public class UserController extends AbstractController {
     })
     @PatchMapping
     public RepObj updateUser(CatUser user) {
-        return success(userService.update(user, user.getId(), CatUser.class));
+        return success(userService.update(user, user.getId()));
     }
 
     @ApiOperation(value = "删除用户", notes = "删除用户")

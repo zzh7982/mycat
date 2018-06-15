@@ -2,19 +2,17 @@ package com.sbjava.cat.controller;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import com.sbjava.cat.model.CatUser;
-import com.sbjava.cat.service.impl.UserService;
 import com.sbjava.cat.service.impl.UserSessionService;
 import com.sbjava.cat.utils.RepObj;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * description: WxController
@@ -22,6 +20,7 @@ import java.util.Map;
  * @author ralf
  * @version [1.0, 2018/6/13]
  */
+@Api(value = "/wx", tags = "微信接口")
 @RestController
 @RequestMapping("/wx")
 @Slf4j
@@ -31,16 +30,12 @@ public class WxController extends AbstractController {
     private WxMaService wxService;
     @Autowired
     private UserSessionService sessionService;
-    @Autowired
-    private UserService userService;
 
+    @ApiOperation(value = "登陆", notes = "登陆接口,需要传入code,返回token,以后所有的请求都需要在header中携带header:{'token':token}")
     @PostMapping("/login")
-    public RepObj login(@RequestBody String code, HttpServletRequest request) {
+    public RepObj login(@RequestBody String code) {
         try {
-            String token = request.getHeader("token");
-            if (StringUtils.isEmpty(token)) {
-                token = request.getSession().getId();
-            }
+            String token = request.getSession().getId();
             WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
             sessionService.saveToken(token, session.getOpenid() + "#" + session.getSessionKey());
             return success(token);
@@ -50,20 +45,5 @@ public class WxController extends AbstractController {
         return success(-1, "登录失败");
     }
 
-    @PostMapping("/test")
-    public RepObj test(HttpServletRequest request) {
-        String token = request.getHeader("token");
-        log.info(sessionService.getOpenId(token));
-        log.info(sessionService.getSessionKey(token));
-
-        return success("");
-    }
-
-    @GetMapping("/user/{openId}")
-    public RepObj use(@PathVariable String openId) {
-        Map<String,Object> map = new HashMap<>(1);
-        map.put("openId",openId);
-        return success(userService.findByPro(CatUser.class, map));
-    }
 }
 
