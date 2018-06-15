@@ -45,4 +45,6 @@ public class CatUser {
      * 0关闭 1开启
      */
     private Integer msgFlag = 0;
+
+    private String openId;
 }

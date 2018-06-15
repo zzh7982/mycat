@@ -29,4 +29,8 @@ public class RepObj {
         this.msg = "success";
         this.data = data;
     }
+    public RepObj(String msg) {
+        this.code = -1;
+        this.msg = msg;
+    }
 }

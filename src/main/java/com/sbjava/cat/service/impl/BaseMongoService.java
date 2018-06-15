@@ -3,6 +3,7 @@ package com.sbjava.cat.service.impl;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.sbjava.cat.service.IMongoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Repository;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description: mongo查询抽象类
@@ -34,7 +37,7 @@ public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
 
     @Override
     public T findOne(Class<T> c, PK pk) {
-        return mongoTemplate.findById(pk, c);
+        return mongoTemplate.findById(pk, getEntityClass());
     }
 
     @Override
@@ -70,5 +73,18 @@ public abstract class BaseMongoService<T, PK> implements IMongoService<T, PK> {
     @Override
     public List<T> findAll(Class<T> c) {
         return mongoTemplate.find(new Query(), c);
+    }
+
+    @Override
+    public List<T> findByPro(Class<T> c, Map<String, Object> map) {
+        Query query = new Query();
+        map.forEach((k, v) -> query.addCriteria(Criteria.where(k).is(v)));
+        return mongoTemplate.find(query, c);
+    }
+
+    // 获取需要操作的实体类class
+    @SuppressWarnings("unchecked")
+    protected Class<T> getEntityClass() {
+        return ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 }

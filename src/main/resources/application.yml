@@ -4,6 +4,10 @@ spring:
       host: 47.95.254.253
       port: 27017
       uri: mongodb://${spring.data.mongodb.host}:${spring.data.mongodb.port}/cat
+  redis:
+    host: localhost
+    port: 6379
+    database: 1
 server:
   port: 80
 

@@ -4,6 +4,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description: mongo接口
@@ -27,11 +28,21 @@ public interface IMongoService<T, PK> {
      * @return obj
      */
     T findOne(Class<T> e, PK pk);
+
+    /**
+     * 查询
+     *
+     * @param e
+     * @param map
+     * @return
+     */
+    List<T> findByPro(Class<T> e, Map<String, Object> map);
+
     /**
      * 查询所有
      *
-     * @param c  class
-     * @return list</obj>
+     * @param c class
+     * @return list</       obj>
      */
     List<T> findAll(Class<T> c);
 
@@ -47,6 +58,7 @@ public interface IMongoService<T, PK> {
 
     /**
      * 删除
+     *
      * @param t obj
      * @return DeleteResult
      */

@@ -2,6 +2,7 @@ package com.sbjava.cat.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @version [1.0, 2018/6/8]
  */
 @Data
+@Document(collection = "c_article")
 public class Article {
     @Id
     private String id;
